@@ -4,7 +4,6 @@ import typer
 from template.model import MyAwesomeModel
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-import sys
 
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
