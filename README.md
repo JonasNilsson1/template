@@ -53,3 +53,10 @@ The directory structure of the project looks like this:
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
 started with Machine Learning Operations (MLOps).
+
+
+## How to run the code
+
+python3 src/template/train.py
+python3 src/template/evaluate.py models/model.pth
+python3 src/template/visualize.py models/model.pth
