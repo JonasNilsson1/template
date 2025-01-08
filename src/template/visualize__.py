@@ -6,18 +6,12 @@ from sklearn.manifold import TSNE
 
 from template.model import MyAwesomeModel
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-
 
 def visualize(model_checkpoint: str, figure_name: str = "embeddings.png") -> None:
     """Visualize model predictions."""
-
-    model = MyAwesomeModel().to(DEVICE)
-    model.load_state_dict(torch.load(model_checkpoint))
-
+    model = MyAwesomeModel().load_state_dict(torch.load(model_checkpoint))
     model.eval()
-
-    model.fc1 = torch.nn.Identity()
+    model.fc = torch.nn.Identity()
 
     test_images = torch.load("data/processed/test_images.pt")
     test_target = torch.load("data/processed/test_target.pt")
@@ -27,14 +21,11 @@ def visualize(model_checkpoint: str, figure_name: str = "embeddings.png") -> Non
     with torch.inference_mode():
         for batch in torch.utils.data.DataLoader(test_dataset, batch_size=32):
             images, target = batch
-            images, target = images.to(DEVICE), target.to(DEVICE)
-
             predictions = model(images)
             embeddings.append(predictions)
             targets.append(target)
-
-        embeddings = torch.cat(embeddings).cpu().numpy()
-        targets = torch.cat(targets).cpu().numpy()
+        embeddings = torch.cat(embeddings).numpy()
+        targets = torch.cat(targets).numpy()
 
     if embeddings.shape[1] > 500:  # Reduce dimensionality for large embeddings
         pca = PCA(n_components=100)
